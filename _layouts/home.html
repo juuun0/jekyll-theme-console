@@ -8,14 +8,15 @@ layout: default
 {%- if site.posts.size > 0 -%}
   <ul>
     {%- assign permissions = "-rw-r--r--" -%}
+    {%- assign count = "1" -%}
     {%- assign owner = "insp3ct0r_x" -%}
     {%- assign group = "insp3ct0r_x" -%}
 
     {%- for post in site.posts limit:10 -%}
     <li id="linuxtic-li">
       {%- assign date_format = "%b %d %Y %H:%M" -%}
-      {{ permissions }} {{ owner }} {{ group }}
-      {{ post.size | default: "0" }}
+      {{ permissions }} {{ count }} {{ owner }} {{ group }}
+      {{ post.content | size }}
       {{ post.date | date: date_format }}
       <a href="{{ post.url | relative_url }}">{{ post.title | escape }}</a>
     </li>
