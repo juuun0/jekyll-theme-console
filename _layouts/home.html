@@ -6,11 +6,12 @@ layout: default
 {% assign contentwonl = content | strip_newlines %} {% unless contentwonl == ""  %} <br /> {% endunless %} <!-- add line break if there is any content -->
 
 {%- if site.posts.size > 0 -%}
+<p>MacBook: ~ root# ls -lt | head -n 10</p>
   <ul>
     {%- assign permissions = "-rw-r--r--" -%}
     {%- assign count = "1" -%}
-    {%- assign owner = "insp3ct0r_x" -%}
-    {%- assign group = "insp3ct0r_x" -%}
+    {%- assign owner = "root" -%}
+    {%- assign group = "root" -%}
 
     {%- for post in site.posts limit:10 -%}
     <li id="linuxtic-li">
