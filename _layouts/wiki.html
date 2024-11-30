@@ -11,24 +11,24 @@ layout: default
 
   <!-- Create the category if it doesn't exist -->
   {% if current[category] == nil %}
-    {% assign temp = current | merge: { category: {} } %}
-    {% assign current = temp %}
+    {% capture temp %}{{ current | jsonify | replace: '{}', '{ "' | append: category | append: '": {} }' }}{% endcapture %}
+    {% assign current = temp | parse_json %}
   {% endif %}
   {% assign current = current[category] %}
 
   <!-- Build the tag hierarchy -->
   {% for tag in post.tags %}
     {% if current[tag] == nil %}
-      {% assign temp = current | merge: { tag: {} } %}
-      {% assign current = temp %}
+      {% capture temp %}{{ current | jsonify | replace: '{}', '{ "' | append: tag | append: '": {} }' }}{% endcapture %}
+      {% assign current = temp | parse_json %}
     {% endif %}
     {% assign current = current[tag] %}
   {% endfor %}
 
   <!-- Add post to the deepest level -->
   {% if current["posts"] == nil %}
-    {% assign temp = current | merge: { "posts": [] } %}
-    {% assign current = temp %}
+    {% capture temp %}{{ current | jsonify | replace: '{}', '{ "posts": [] }' }}{% endcapture %}
+    {% assign current = temp | parse_json %}
   {% endif %}
   {% assign current["posts"] = current["posts"] | push: post %}
 {% endfor %}
@@ -45,3 +45,4 @@ layout: default
     </li>
   {% endfor %}
 </ul>
+
