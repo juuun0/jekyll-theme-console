@@ -1,16 +1,11 @@
 ---
 layout: default
 ---
-<!-- Print hierarchical structure -->
-<link rel="stylesheet" href="/assets/css/wiki-styles.css">
-<ul class="tree">
-  {% if page.categories %}
-    <li class="root">{{ page.categories }}
-      <ul>
-        {% for tag in page.tags %}
-          {% include tree.html item=tag is_last=forloop.last prefix="" %}
-        {% endfor %}
-      </ul>
-    </li>
-  {% endif %}
-</ul>
+
+test content
+
+{{ site.categories }}
+
+<p>===============</p>
+
+{{ site.tags }}
