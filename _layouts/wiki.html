@@ -2,8 +2,6 @@
 layout: default
 ---
 
-<!-- This is your layout file, e.g., _layouts/hierarchy.html -->
-
 {% assign hierarchy = {} %}
 
 <!-- Step 1: Build the Nested Hierarchy -->
@@ -32,7 +30,7 @@ layout: default
   {% assign current["posts"] = current["posts"] | push: post %}
 {% endfor %}
 
-<!-- Step 2: Render the Nested Hierarchy -->
+<!-- Step 2: Recursive Rendering -->
 <ul>
   {% for category, tags in hierarchy %}
     <li><strong>{{ category }}</strong>
@@ -41,9 +39,9 @@ layout: default
   {% endfor %}
 </ul>
 
-<!-- Recursive Function to Render Tags -->
+<!-- Inline Recursive Function -->
+{% assign render_tags = "" %}
 {% capture render_tags %}
-{% macro render_tags(tags) %}
   <ul>
     {% for tag, value in tags %}
       {% if tag == "posts" %}
@@ -54,28 +52,19 @@ layout: default
         </ul>
       {% else %}
         <li>{{ tag }}
-          {{ render_tags(value) }}
-        </li>
-      {% endif %}
-    {% endfor %}
-  </ul>
-{% endmacro %}
-{% endcapture %}
-
-<!-- Inline Alternative for GitHub Pages (Replace Macro if Needed) -->
-{% assign render_tags_inline = "" %}
-{% capture render_tags_inline %}
-  <ul>
-    {% for tag, value in tags %}
-      {% if tag == "posts" %}
-        <ul>
-          {% for post in value %}
-            <li><a href="{{ post.url }}">{{ post.title }}</a></li>
-          {% endfor %}
-        </ul>
-      {% else %}
-        <li>{{ tag }}
-          {{ render_tags_inline | replace: "tags", value }}
+          <ul>
+            {% for sub_tag, sub_value in value %}
+              {% if sub_tag == "posts" %}
+                <ul>
+                  {% for post in sub_value %}
+                    <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+                  {% endfor %}
+                </ul>
+              {% else %}
+                <li>{{ sub_tag }}</li>
+              {% endif %}
+            {% endfor %}
+          </ul>
         </li>
       {% endif %}
     {% endfor %}
