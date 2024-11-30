@@ -1,34 +1,31 @@
 ---
 layout: default
 ---
-
 {% assign hierarchy = {} %}
 
 <!-- Step 1: Build the Nested Hierarchy -->
 {% for post in site.posts %}
-  {% assign current = hierarchy %}
   {% assign category = post.category %}
+  {% assign tags = post.tags %}
 
-  <!-- Create the category if it doesn't exist -->
-  {% if current[category] == nil %}
-    {% capture temp %}{{ current | jsonify | replace: '{}', '{ "' | append: category | append: '": {} }' }}{% endcapture %}
-    {% assign current = temp | parse_json %}
+  <!-- Ensure the category exists in the hierarchy -->
+  {% if hierarchy[category] == nil %}
+    {% assign hierarchy = hierarchy | push: category %}
+    {% assign hierarchy[category] = {} %}
   {% endif %}
-  {% assign current = current[category] %}
 
-  <!-- Build the tag hierarchy -->
-  {% for tag in post.tags %}
+  <!-- Traverse tags and build the hierarchy -->
+  {% assign current = hierarchy[category] %}
+  {% for tag in tags %}
     {% if current[tag] == nil %}
-      {% capture temp %}{{ current | jsonify | replace: '{}', '{ "' | append: tag | append: '": {} }' }}{% endcapture %}
-      {% assign current = temp | parse_json %}
+      {% assign current[tag] = {} %}
     {% endif %}
     {% assign current = current[tag] %}
   {% endfor %}
 
-  <!-- Add post to the deepest level -->
+  <!-- Add the post to the deepest level -->
   {% if current["posts"] == nil %}
-    {% capture temp %}{{ current | jsonify | replace: '{}', '{ "posts": [] }' }}{% endcapture %}
-    {% assign current = temp | parse_json %}
+    {% assign current["posts"] = [] %}
   {% endif %}
   {% assign current["posts"] = current["posts"] | push: post %}
 {% endfor %}
@@ -39,10 +36,8 @@ layout: default
     <li>
       <strong>{{ category }}</strong>
       <ul>
-        {% assign tags = hierarchy[category] %}
-        {% include render_tags.html tags=tags %}
+        {% include render_tags.html tags=hierarchy[category] %}
       </ul>
     </li>
   {% endfor %}
 </ul>
-
