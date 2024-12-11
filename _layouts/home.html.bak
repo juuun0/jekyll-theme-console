@@ -1,0 +1,26 @@
+---
+layout: default
+---
+
+{{ content }}
+{% assign contentwonl = content | strip_newlines %} {% unless contentwonl == ""  %} <br /> {% endunless %} <!-- add line break if there is any content -->
+
+{%- if site.posts.size > 0 -%}
+<p>MacBook:~ root# ls -lt | head -n 10</p>
+  <ul>
+    {%- assign permissions = "-rw-r--r--" -%}
+    {%- assign count = "1" -%}
+    {%- assign owner = "root" -%}
+    {%- assign group = "root" -%}
+
+    {%- for post in site.posts limit:10 -%}
+    <li id="linuxtic-li">
+      {%- assign date_format = "%b %d %Y %H:%M" -%}
+      {{ permissions }} {{ count }} {{ owner }} {{ group }}
+      {{ post.content | size }}
+      {{ post.date | date: date_format }}
+      <a href="{{ post.url | relative_url }}">{{ post.title | escape }}</a>
+    </li>
+    {%- endfor -%}
+  </ul>
+{%- endif -%}
