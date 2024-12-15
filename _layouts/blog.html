@@ -3,9 +3,11 @@ layout: default
 ---
 
 {% for post in site.posts %}
+{% if post.category == "Blog" %}
 <h2><a href="{{ post.url }}">{{ post.title }}</a></h2>
 <p>
 Topics: [{{ post.tags | join: ", " }}]
 Published at: {{ post.date | date_to_string }}
 </p>
+{% else %}
 {% endfor %}
