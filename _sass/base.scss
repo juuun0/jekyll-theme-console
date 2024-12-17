@@ -137,3 +137,8 @@ pre { background-color: var(--background-color);  border: none;  padding: 0;  ma
  * Customized style
  */
 #linuxtic-li::before { content: none; margin-right: 9px; }
+
+img {
+  max-width: $container-max-width;
+  height: auto;
+}
