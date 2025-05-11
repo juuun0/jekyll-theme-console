@@ -147,6 +147,8 @@ hr {
   border: var(--border);
 }
 
-code {
-  background-color: var(--code-color-11)
+code.language-plaintext.highlight-rouge {
+  background-color: var(--code-color-11);
+  border-radius: 10px;
+  padding: 1em;
 }
